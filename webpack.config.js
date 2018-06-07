@@ -1,9 +1,9 @@
 var config = {
-   entry: './main.js',
+   entry: __dirnmae+'/main.js',
    output: {
-      path:'/',
+      path:__dirname+'/',
       filename: 'index.js',
-   }
+   },
    module: {
       loaders: [
          {
