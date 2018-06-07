@@ -1,5 +1,6 @@
 var config = {
-   entry: __dirnmae+'/main.js',
+   entry: __dirname+'/main.js',
+
    output: {
       path:__dirname+'/',
       filename: 'index.js',
@@ -7,18 +8,20 @@ var config = {
    module: {
       loaders: [
          {
-            test: [/\.jsx?$/,/\.js?$/],
+            test: /\.jsx?$/,
             exclude: /node_modules/,
             loader: 'babel-loader',
+
             query: {
                presets: ['es2015', 'react']
             }
          },
          {
-         	test: /\.(jpe?g|gif|png)$/,
-         	loader: "file-loader?emitFile=false&name=./client/assets/images/[name].[ext]"
-         }
+             test: /\.css$/,
+            loader: 'style-loader!css-loader'
+          }
       ]
    }
 }
+
 module.exports = config;
