@@ -17,7 +17,6 @@ export default class AppBarComponent extends Component
             <Typography variant="title" color="inherit" >
               {this.props.title}
             </Typography>
-            <Button color="inherit" style={{position:'absolute',right: 15}}>Login</Button>
           </Toolbar>
       </AppBar>
     </div>
