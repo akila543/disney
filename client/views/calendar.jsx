@@ -28,7 +28,7 @@ export default class Calendar extends Component
             {name:"Doc McStuffins", category:"wip", bgcolor:"skyblue",time:'1 Hr'},
             {name:"Goof Troop", category:"wip", bgcolor:"skyblue",time:'1 Hr'},
           ],
-        time:['-8:00 PM','-8:30 PM','-9:00 PM','-9:30 PM','-10:0 PM','-10:3 PM0','-11:0 PM0'],
+        time:['- 8:00 AM','- 9:00 AM','- 10:00 AM','- 11:00 AM','- 12:0 AM','- 13:00 PM','- 14:00 PM'],
         date1:[],
         date2:[],
         date3:[],
