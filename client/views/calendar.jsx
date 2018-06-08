@@ -22,13 +22,13 @@ export default class Calendar extends Component
     super();
     this.state = {
         tasks: [
-            {name:"Dancing Junior",category:"wip", bgcolor: "yellow",time:'17:00-18:00'},
-            {name:"Fuller House", category:"wip", bgcolor:"pink",time:'18:00-19:00'},
-            {name:"Dancing Stars", category:"wip", bgcolor:"skyblue",time:'14:00-15:00'},
-            {name:"Doc McStuffins", category:"wip", bgcolor:"skyblue",time:'14:00-15:00'},
-            {name:"Goof Troop", category:"wip", bgcolor:"skyblue",time:'14:00-15:00'},
+            {name:"Dancing Junior",category:"wip", bgcolor: "yellow",time:'1 Hr'},
+            {name:"Fuller House", category:"wip", bgcolor:"pink",time:'1 Hr'},
+            {name:"Dancing Stars", category:"wip", bgcolor:"skyblue",time:'1 Hr'},
+            {name:"Doc McStuffins", category:"wip", bgcolor:"skyblue",time:'1 Hr'},
+            {name:"Goof Troop", category:"wip", bgcolor:"skyblue",time:'1 Hr'},
           ],
-        time:['-8:00 PM','-8:30 PM','-9:00 PM','-9:30 PM','-10:0 PM0','-10:3 PM0','-11:0 PM0'],
+        time:['-8:00 PM','-8:30 PM','-9:00 PM','-9:30 PM','-10:0 PM','-10:3 PM0','-11:0 PM0'],
         date1:[],
         date2:[],
         date3:[],
@@ -103,14 +103,6 @@ export default class Calendar extends Component
        this.setState({date5:newarr});
      }
 
-     // let tasks = this.state.tasks.filter((task) => {
-     //     if (task.name == id) {
-     //         task.category = cat;
-     //     }
-     //     return task;
-     // });
-
-     // this.setState({tasks:tasks});
   }
 
   renderTimeSlot()
@@ -157,7 +149,6 @@ export default class Calendar extends Component
         {/* Appbar component */}
         <AppBarComponent title={'ABC 2017/2018 Schedule'} color={'#2c3331'}/>
         <br/>
-
         {/* Progrmas */}
         <div style={styles.wip} onDragOver={(e)=>this.onDragOver(e)} onDrop={(e)=>{this.onDrop(e, "wip")}}>
             <Card style={{backgroundColor:'#76827f'}}>
@@ -178,7 +169,7 @@ export default class Calendar extends Component
 
             {/* Time Slots */}
             <div style={styles.timeSlotDiv}>
-              <div style={{marginTop:83}}>
+              <div style={{marginTop:83,zIndex:1}}>
                 {this.renderTimeSlot()}
               </div>
             </div>
@@ -210,7 +201,7 @@ export default class Calendar extends Component
                                     {t.name}
                                   </Typography>
                                   <Typography component="p" style={{color:'#0ebaa6'}}>
-                                    {t.time}
+                                    Duration {t.time}
                                   </Typography>
                                 </CardContent>
                               </Card>
@@ -219,26 +210,6 @@ export default class Calendar extends Component
                       );
                     })
                   }
-
-                   {/* {this.state.date1.map((t,index)=>(
-                     <div>
-                       <div key={index}
-                           onDragStart = {(e) => this.onDragStart(e, t.name)}
-                           draggable
-                           style={styles.draggable}>
-                             <Card style={styles.card}>
-                             <CardContent>
-                               <Typography gutterBottom variant="headline" component="h1" style={styles.title}>
-                                 {t.name}
-                               </Typography>
-                               <Typography component="p" style={{color:'#0ebaa6'}}>
-                                 {t.time}
-                               </Typography>
-                             </CardContent>
-                           </Card>
-                       </div>
-                     </div>
-                   ))} */}
               </div>
             </div>
 
@@ -266,7 +237,7 @@ export default class Calendar extends Component
                                 {t.name}
                               </Typography>
                               <Typography component="p" style={{color:'#0ebaa6'}}>
-                                {t.time}
+                                Duration {t.time}
                               </Typography>
                             </CardContent>
                           </Card>
@@ -300,7 +271,7 @@ export default class Calendar extends Component
                                 {t.name}
                               </Typography>
                               <Typography component="p" style={{color:'#0ebaa6'}}>
-                                {t.time}
+                                Duration {t.time}
                               </Typography>
                             </CardContent>
                           </Card>
@@ -334,7 +305,7 @@ export default class Calendar extends Component
                                 {t.name}
                               </Typography>
                               <Typography component="p" style={{color:'#0ebaa6'}}>
-                                {t.time}
+                                Duration {t.time}
                               </Typography>
                             </CardContent>
                           </Card>
@@ -368,7 +339,7 @@ export default class Calendar extends Component
                                 {t.name}
                               </Typography>
                               <Typography component="p" style={{color:'#0ebaa6'}}>
-                                {t.time}
+                                Duration {t.time}
                               </Typography>
                             </CardContent>
                           </Card>
@@ -404,7 +375,8 @@ const styles = {
   },
   timeSlotDiv:{
     width:100,
-    float:'left'
+    float:'left',
+    zIndex:1
   },
   calendar:{
     width:window.innerWidth - 254,
@@ -435,10 +407,8 @@ const styles = {
     width:'100%',
   },
   droppable: {
-    // width: '200px',
     height: '93vh',
     backgroundColor: '#9E9E9E',
-    // borderLeft: '1px dotted',
   },
   draggable: {
     margin: '10px',
