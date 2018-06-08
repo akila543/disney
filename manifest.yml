@@ -1,0 +1,6 @@
+applications:
+ - name: disney
+   memory: 128m
+   instances: 1
+   routes:
+   - route: disney.cfapps.io
