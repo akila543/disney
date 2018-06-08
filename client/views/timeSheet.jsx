@@ -113,12 +113,8 @@ export default class TimeSheet extends Component
               </Typography>
             </Card>
             <br/>
-
              {tasks.complete}
         </div>
-
-
-
 
       </div>
     );
