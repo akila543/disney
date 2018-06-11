@@ -1,18 +1,11 @@
 import React, {Component} from 'react';
 
-
 //importing Reusable components
 import AppBarComponent from './../components/appBar.jsx';
-
-//importing Material ui components
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-
+import Segment from './../components/segment.jsx';
+import TimeSlotSegment from './../components/timeSlotSegment.jsx';
+import CardComponent from './../components/cardComponent.jsx';
+import ShowCards from './../components/showCards.jsx';
 
 export default class Calendar extends Component
 {
@@ -28,13 +21,17 @@ export default class Calendar extends Component
             {name:"Doc McStuffins", category:"wip", bgcolor:"skyblue",time:'1 Hr'},
             {name:"Goof Troop", category:"wip", bgcolor:"skyblue",time:'1 Hr'},
           ],
-        time:['-8:00 PM','-8:30 PM','-9:00 PM','-9:30 PM','-10:0 PM','-10:3 PM0','-11:0 PM0'],
+        time:['- 8:00 PM','- 9:00 PM','- 10:00 PM','- 11:00 PM',,'- 12:00 PM'],
         date1:[],
         date2:[],
         date3:[],
         date4:[],
         date5:[]
     }
+    this.onDragStart = this.onDragStart.bind(this);
+    this.onDragOver = this.onDragOver.bind(this);
+    this.onDrop = this.onDrop.bind(this);
+
   }
 
   onDragStart(ev, id){
@@ -48,8 +45,6 @@ export default class Calendar extends Component
 
   onDrop(ev, cat, segment){
      let id = ev.dataTransfer.getData("id");
-
-     console.log(segment);
 
      if(segment == 'date01')
      {
@@ -102,251 +97,66 @@ export default class Calendar extends Component
        var newarr = arr.concat(tasks);
        this.setState({date5:newarr});
      }
-
   }
 
-  renderTimeSlot()
+  renderShowCards()
   {
     return(
-      this.state.time.map((time,key)=> (<div key={key} style={styles.timeSolts}>{time}</div>))
+      this.state.tasks.map((t,index) => (
+        <ShowCards key={index} data={t} dragStartEvent={this.onDragStart} titleStyle={styles.title} draggableStyle={styles.draggable} cardStyle={styles.card} />
+      ))
     );
   }
 
-
-
   render()
   {
-
-    console.log(this.state.date1);
-
-    var tasks = { wip: [],complete: []}
-
-    this.state.tasks.forEach ((t) => {
-        tasks[t.category].push(
-          <div>
-            <div key={t.name}
-                onDragStart = {(e) => this.onDragStart(e, t.name)}
-                draggable
-                style={styles.draggable}>
-                  <Card style={styles.card}>
-                  <CardContent>
-                    <Typography gutterBottom variant="headline" component="h1" style={styles.title}>
-                      {t.name}
-                    </Typography>
-                    <Typography component="p" style={{color:'#0ebaa6'}}>
-                      {t.time}
-                    </Typography>
-                  </CardContent>
-                </Card>
-            </div>
-          </div>
-        );
-    });
-
     return(
       <div>
 
         {/* Appbar component */}
         <AppBarComponent title={'ABC 2017/2018 Schedule'} color={'#2c3331'}/>
         <br/>
-        {/* Progrmas */}
+
+        {/* Shows */}
         <div style={styles.wip} onDragOver={(e)=>this.onDragOver(e)} onDrop={(e)=>{this.onDrop(e, "wip")}}>
-            <Card style={{backgroundColor:'#76827f'}}>
-              <Typography gutterBottom variant="headline" component="h2" style={{color:'white',textAlign:'center',padding:5,fontSize:20}}>
-                Series
-              </Typography>
-            </Card>
-            {tasks.wip}
+            <CardComponent data={"Series"} cardStyle={styles.headerStyle} typoStyle={styles.typoStyle}/>
+            {this.renderShowCards()}
         </div>
 
         {/* Time Sheet */}
         <div style={styles.calendar}>
-            <Card style={{backgroundColor:'#76827f'}}>
-              <Typography gutterBottom variant="headline" component="h2" style={{color:'white',textAlign:'center',padding:5,fontSize:20}}>
-                June 2018
-              </Typography>
-            </Card>
+          <CardComponent data={"June 2018"} cardStyle={styles.headerStyle} typoStyle={styles.typoStyle}/>
 
             {/* Time Slots */}
             <div style={styles.timeSlotDiv}>
-              <div style={{marginTop:83,zIndex:1}}>
-                {this.renderTimeSlot()}
+              <div style={{marginTop:83}}>
+                <TimeSlotSegment data={this.state.time} timeSlotStyle={styles.timeSolts}/>
               </div>
             </div>
 
             {/* Date 1 Slot */}
-            <div style={styles.dateSlotDiv} id="date01" ref="date01">
-              <div style={styles.droppable}
-                  onDragOver={(e)=>this.onDragOver(e)}
-                  onDrop={(e)=>this.onDrop(e, "complete", "date01")}>
-
-                  <Card style={{backgroundColor:'#091528'}}>
-                    <Typography gutterBottom variant="headline" component="h2" style={{color:'white',textAlign:'center',padding:10}}>
-                      01
-                    </Typography>
-                  </Card>
-                  <br/>
-                  {
-                    this.state.date1.map((t,index)=>{
-                      console.log(t.name);
-                      return(
-                        <div key={index}>
-                          <div
-                              onDragStart = {(e) => this.onDragStart(e, t.name)}
-                              draggable
-                              style={styles.draggable}>
-                                <Card style={styles.card}>
-                                <CardContent>
-                                  <Typography gutterBottom variant="headline" component="h1" style={styles.title}>
-                                    {t.name}
-                                  </Typography>
-                                  <Typography component="p" style={{color:'#0ebaa6'}}>
-                                    Duration {t.time}
-                                  </Typography>
-                                </CardContent>
-                              </Card>
-                          </div>
-                        </div>
-                      );
-                    })
-                  }
-              </div>
+            <div style={styles.dateSlotDiv} >
+              <Segment date={"01"} titleStyle={styles.title} cardStyle={styles.card} draggableStyle={styles.draggable} dropableStyle={styles.droppable} dragStartEvent={this.onDragStart} segmentName={"date01"} dropEvent={this.onDrop} dragEvent={this.onDragOver} data={this.state.date1} />
             </div>
 
             {/* Date 2 Slot */}
-            <div style={styles.dateSlotDiv} id="date02" ref="date02">
-              <div style={styles.droppable}
-                  onDragOver={(e)=>this.onDragOver(e)}
-                  onDrop={(e)=>this.onDrop(e, "complete", "date02")}>
-
-                  <Card style={{backgroundColor:'#091528'}}>
-                    <Typography gutterBottom variant="headline" component="h2" style={{color:'white',textAlign:'center',padding:10}}>
-                      02
-                    </Typography>
-                  </Card>
-                  <br/>
-                  {this.state.date2.map((t)=>(
-                    <div>
-                      <div key={t.name}
-                          onDragStart = {(e) => this.onDragStart(e, t.name)}
-                          draggable
-                          style={styles.draggable}>
-                            <Card style={styles.card}>
-                            <CardContent>
-                              <Typography gutterBottom variant="headline" component="h1" style={styles.title}>
-                                {t.name}
-                              </Typography>
-                              <Typography component="p" style={{color:'#0ebaa6'}}>
-                                Duration {t.time}
-                              </Typography>
-                            </CardContent>
-                          </Card>
-                      </div>
-                    </div>
-                  ))}
-              </div>
+            <div style={styles.dateSlotDiv} >
+              <Segment date={"02"} titleStyle={styles.title} cardStyle={styles.card} draggableStyle={styles.draggable} dropableStyle={styles.droppable} dragStartEvent={this.onDragStart} segmentName={"date02"} dropEvent={this.onDrop} dragEvent={this.onDragOver} data={this.state.date2} />
             </div>
 
             {/* Date 3 Slot */}
-            <div style={styles.dateSlotDiv} id="date03" ref="date03">
-              <div style={styles.droppable}
-                  onDragOver={(e)=>this.onDragOver(e)}
-                  onDrop={(e)=>this.onDrop(e, "complete", "date03")}>
-
-                  <Card style={{backgroundColor:'#091528'}}>
-                    <Typography gutterBottom variant="headline" component="h2" style={{color:'white',textAlign:'center',padding:10}}>
-                      03
-                    </Typography>
-                  </Card>
-                  <br/>
-                  {this.state.date3.map((t)=>(
-                    <div>
-                      <div key={t.name}
-                          onDragStart = {(e) => this.onDragStart(e, t.name)}
-                          draggable
-                          style={styles.draggable}>
-                            <Card style={styles.card}>
-                            <CardContent>
-                              <Typography gutterBottom variant="headline" component="h1" style={styles.title}>
-                                {t.name}
-                              </Typography>
-                              <Typography component="p" style={{color:'#0ebaa6'}}>
-                                Duration {t.time}
-                              </Typography>
-                            </CardContent>
-                          </Card>
-                      </div>
-                    </div>
-                  ))}
-              </div>
+            <div style={styles.dateSlotDiv} >
+              <Segment date={"03"} titleStyle={styles.title} cardStyle={styles.card} draggableStyle={styles.draggable} dropableStyle={styles.droppable} dragStartEvent={this.onDragStart} segmentName={"date03"} dropEvent={this.onDrop} dragEvent={this.onDragOver} data={this.state.date3} />
             </div>
 
             {/* Date 4 Slot */}
-            <div style={styles.dateSlotDiv} id="date04" ref="date04">
-              <div style={styles.droppable}
-                  onDragOver={(e)=>this.onDragOver(e)}
-                  onDrop={(e)=>this.onDrop(e, "complete", "date04")}>
-
-                  <Card style={{backgroundColor:'#091528'}}>
-                    <Typography gutterBottom variant="headline" component="h2" style={{color:'white',textAlign:'center',padding:10}}>
-                      04
-                    </Typography>
-                  </Card>
-                  <br/>
-                  {this.state.date4.map((t)=>(
-                    <div>
-                      <div key={t.name}
-                          onDragStart = {(e) => this.onDragStart(e, t.name)}
-                          draggable
-                          style={styles.draggable}>
-                            <Card style={styles.card}>
-                            <CardContent>
-                              <Typography gutterBottom variant="headline" component="h1" style={styles.title}>
-                                {t.name}
-                              </Typography>
-                              <Typography component="p" style={{color:'#0ebaa6'}}>
-                                Duration {t.time}
-                              </Typography>
-                            </CardContent>
-                          </Card>
-                      </div>
-                    </div>
-                  ))}
-              </div>
+            <div style={styles.dateSlotDiv} >
+              <Segment date={"04"} titleStyle={styles.title} cardStyle={styles.card} draggableStyle={styles.draggable} dropableStyle={styles.droppable} dragStartEvent={this.onDragStart} segmentName={"date04"} dropEvent={this.onDrop} dragEvent={this.onDragOver} data={this.state.date4} />
             </div>
 
             {/* Date 5 Slot */}
-            <div style={styles.dateSlotDiv} id="date05" ref="date05">
-              <div style={styles.droppable}
-                  onDragOver={(e)=>this.onDragOver(e)}
-                  onDrop={(e)=>this.onDrop(e, "complete", "date05")}>
-
-                  <Card style={{backgroundColor:'#091528'}}>
-                    <Typography gutterBottom variant="headline" component="h2" style={{color:'white',textAlign:'center',padding:10}}>
-                      05
-                    </Typography>
-                  </Card>
-                  <br/>
-                  {this.state.date5.map((t)=>(
-                    <div>
-                      <div key={t.name}
-                          onDragStart = {(e) => this.onDragStart(e, t.name)}
-                          draggable
-                          style={styles.draggable}>
-                            <Card style={styles.card}>
-                            <CardContent>
-                              <Typography gutterBottom variant="headline" component="h1" style={styles.title}>
-                                {t.name}
-                              </Typography>
-                              <Typography component="p" style={{color:'#0ebaa6'}}>
-                                Duration {t.time}
-                              </Typography>
-                            </CardContent>
-                          </Card>
-                      </div>
-                    </div>
-                  ))}
-              </div>
+            <div style={styles.dateSlotDiv} >
+              <Segment date={"05"} titleStyle={styles.title} cardStyle={styles.card} draggableStyle={styles.draggable} dropableStyle={styles.droppable} dragStartEvent={this.onDragStart} segmentName={"date05"} dropEvent={this.onDrop} dragEvent={this.onDragOver} data={this.state.date5} />
             </div>
 
           </div>
@@ -360,6 +170,9 @@ const styles = {
     fontSize:16,
     color:'white'
   },
+  headerStyle:{
+    backgroundColor:'#76827f'
+  },
   card:{
     backgroundColor:'#606368',
     height:'100px',
@@ -370,13 +183,12 @@ const styles = {
     padding:5
   },
   dateSlotDiv:{
-    width:'180px',
+    width:'189px',
     float:'left'
   },
   timeSlotDiv:{
     width:100,
     float:'left',
-    zIndex:1
   },
   calendar:{
     width:window.innerWidth - 254,
@@ -385,26 +197,11 @@ const styles = {
     float:'left',
     marginLeft:20
   },
-  header: {
-    display: 'inlineBlock',
-    margin: 0,
-    padding: 0,
-    backgroundColor: '#E0E0E0',
-    width:'100%'
-  },
-  containerDrag: {
-    textAlign: 'center'
-  },
   wip: {
     width:'200px',
     height: '100vh',
     backgroundColor: '#474a4f',
     float:'left',
-  },
-  taskHeader:{
-    display: 'inlineBlock',
-    backgroundColor: 'skyblue',
-    width:'100%',
   },
   droppable: {
     height: '93vh',
@@ -413,9 +210,11 @@ const styles = {
   draggable: {
     margin: '10px',
   },
-  media:{
-    width:'100%',
-    paddingTop:'56.25%'
+  typoStyle:{
+    color:'white',
+    textAlign:'center',
+    padding:5,
+    fontSize:20
   }
 
 }
